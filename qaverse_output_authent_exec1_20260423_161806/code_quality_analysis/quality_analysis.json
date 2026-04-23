@@ -1,0 +1,205 @@
+{
+  "eslint": {
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "env": {
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "prettier",
+      "markdown"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "no-magic-numbers": [
+        "warn",
+        {
+          "ignore": [0, 1],
+          "ignoreArrayIndexes": true
+        }
+      ],
+      "complexity": ["warn", 9],
+      "max-depth": ["warn", 3],
+      "prefer-const": "warn",
+      "no-unused-vars": "warn",
+      "no-console": "off"
+    },
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "rules": {
+          "@typescript-eslint/explicit-function-return-type": "off"
+        }
+      },
+      {
+        "files": ["*.md"],
+        "processor": "markdown/markdown",
+        "rules": {
+          "no-console": "off"
+        }
+      }
+    ],
+    "settings": {
+      "import/resolver": {
+        "node": {
+          "extensions": [".js", ".ts"]
+        }
+      }
+    }
+  },
+  "prettier": {
+    "config": {
+      "printWidth": 100,
+      "tabWidth": 2,
+      "useTabs": false,
+      "semi": true,
+      "singleQuote": true,
+      "trailingComma": "all",
+      "bracketSpacing": true,
+      "arrowParens": "avoid"
+    }
+  },
+  "sonarqube": {
+    "projectKey": "SampleProject",
+    "projectName": "Sample Project",
+    "sources": [
+      "src"
+    ],
+    "tests": [
+      "tests",
+      "e2e"
+    ],
+    "properties": {
+      "sonar.python.version": "3.11",
+      "sonar.sources": "src",
+      "sonar.tests": "tests,e2e",
+      "sonar.coverage.exclusions": "**/tests/**"
+    },
+    "coverageThresholds": {
+      "statements": 80,
+      "branches": 80
+    }
+  },
+  "black": {
+    "config": {
+      "line_length": 88,
+      "target_version": ["py311"],
+      "skip_string_normalization": true
+    }
+  },
+  "pylint": {
+    "config": {
+      "disable": [
+        "C0114",
+        "C0115",
+        "C0116"
+      ],
+      "max-line-length": 88,
+      "max-complexity": 9,
+      "max-nested-blocks": 3,
+      "load-plugins": [
+        "pylint.extensions.mccabe"
+      ]
+    }
+  },
+  "flake8": {
+    "config": {
+      "max-line-length": 88,
+      "select": ["E", "W", "F", "C90"],
+      "max-complexity": 9
+    }
+  },
+  "typescript": {
+    "tsconfig": {
+      "compilerOptions": {
+        "target": "ES2020",
+        "module": "commonjs",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true
+      }
+    }
+  },
+  "mypy": {
+    "config": {
+      "python_version": "3.11",
+      "ignore_missing_imports": true,
+      "strict_optional": true,
+      "disallow_untyped_defs": true,
+      "check_untyped_defs": true,
+      "warn_return_any": true
+    }
+  },
+  "code_climate": {
+    "config": {
+      "version": 2,
+      "plugins": [
+        { "name": "codeclimate-eslint" },
+        { "name": "codeclimate-python" }
+      ],
+      "exclude_paths": [
+        "node_modules/",
+        "venv/",
+        "build/",
+        "dist/"
+      ]
+    }
+  },
+  "dependency_scanning": {
+    "pip_audit": {
+      "enabled": true,
+      "requirements_file": "requirements.txt",
+      "ignore_dev": false
+    },
+    "safety": {
+      "enabled": true
+    },
+    "npm_audit": {
+      "enabled": false
+    }
+  },
+  "code_smells": {
+    "ts": [
+      {
+        "file": "e2e.spec.ts",
+        "issue": "Magic Numbers",
+        "severity": "low",
+        "remediation": "Replace numeric literals with named constants; extract numbers into a constants module"
+      }
+    ],
+    "py": []
+  },
+  "coverage": {
+    "python": {
+      "tool": "coverage.py",
+      "fail_under": 80,
+      "branch": true
+    },
+    "typescript": {
+      "tool": "jest/nyc",
+      "fail_under": 80,
+      "branch": true
+    }
+  },
+  "complexity": {
+    "python": {
+      "maxCyclomatic": 9,
+      "maxDepth": 3
+    },
+    "typescript": {
+      "maxCyclomatic": 9,
+      "maxDepth": 3
+    }
+  }
+}
