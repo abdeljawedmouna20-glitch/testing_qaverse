@@ -1,0 +1,183 @@
+{
+  "folder_path": "/home/uid1811@focus.com.tn/QAVerse/Workspaces/abdeljawedmouna20-glitch-testing_qaverse",
+  "total_files_analyzed": 1,
+  "analysis_results": [
+    {
+      "file_name": "auth_simple.py",
+      "language": "python",
+      "code_structure": {
+        "classes": [],
+        "functions": [
+          {
+            "name": "hash_password",
+            "docstring": null,
+            "args": [
+              "password"
+            ],
+            "line_number": 9
+          },
+          {
+            "name": "authenticate",
+            "docstring": null,
+            "args": [
+              "username",
+              "password"
+            ],
+            "line_number": 12
+          },
+          {
+            "name": "login",
+            "docstring": null,
+            "args": [],
+            "line_number": 19
+          }
+        ],
+        "methods": [],
+        "imports": [
+          "hashlib"
+        ],
+        "constants": []
+      },
+      "business_logic": [],
+      "requirements": {
+        "functional_requirements": [
+          {
+            "id": "REQ-001",
+            "title": "Hash password using SHA-256",
+            "description": "The system must provide a function hash_password(password) that returns the SHA-256 hexadecimal digest of the input password.",
+            "priority": "high",
+            "category": "data_processing",
+            "acceptance_criteria": [
+              "hash_password('any_password') returns a 64-character hexadecimal string",
+              "hash_password(password) equals hashlib.sha256(password.encode()).hexdigest()"
+            ],
+            "related_code": [
+              "hash_password"
+            ]
+          },
+          {
+            "id": "REQ-002",
+            "title": "In-memory user credential store",
+            "description": "Maintain an in-memory dictionary (users_db) that maps usernames to their corresponding password hashes for authentication.",
+            "priority": "high",
+            "category": "data_processing",
+            "acceptance_criteria": [
+              "Users 'admin' and 'user' exist in the store",
+              "Stored passwords are hashes, not plaintext",
+              "The store is in-memory and not persisted to disk"
+            ],
+            "related_code": [
+              "users_db"
+            ]
+          },
+          {
+            "id": "REQ-003",
+            "title": "Authenticate credentials",
+            "description": "The function authenticate(username, password) must validate that the username exists and the hashed input password matches the stored hash.",
+            "priority": "high",
+            "category": "business_logic",
+            "acceptance_criteria": [
+              "Returns True for valid username and correct password",
+              "Returns False if the username does not exist or the password is incorrect"
+            ],
+            "related_code": [
+              "authenticate"
+            ]
+          },
+          {
+            "id": "REQ-004",
+            "title": "Login flow and user interaction",
+            "description": "The function login() must present a username and password prompt (in French), call the authentication logic, and print a success or failure message accordingly.",
+            "priority": "high",
+            "category": "ui",
+            "acceptance_criteria": [
+              "Prompts shown: 'Nom d'utilisateur' and 'Mot de passe'",
+              "On success, prints 'Connexion réussie !'",
+              "On failure, prints 'Identifiants incorrects'"
+            ],
+            "related_code": [
+              "login"
+            ]
+          },
+          {
+            "id": "REQ-005",
+            "title": "Script entry point starts login flow",
+            "description": "When the module is executed as the main program, the login flow (login()) must be started automatically.",
+            "priority": "medium",
+            "category": "integration",
+            "acceptance_criteria": [
+              "Running the script directly calls login()",
+              "No automatic login occurs when the module is imported"
+            ],
+            "related_code": [
+              "__main__"
+            ]
+          }
+        ],
+        "user_stories": [
+          {
+            "id": "US-001",
+            "title": "User can authenticate with username and password",
+            "description": "As a user, I want to login with a username and password so that I can authenticate to the system.",
+            "acceptance_criteria": [
+              "Given valid credentials, When I attempt to login, Then I see 'Connexion réussie !'",
+              "Given invalid credentials, When I attempt to login, Then I see 'Identifiants incorrects'"
+            ],
+            "related_requirements": [
+              "REQ-001",
+              "REQ-003",
+              "REQ-004"
+            ]
+          },
+          {
+            "id": "US-002",
+            "title": "Developer can run login flow directly",
+            "description": "As a developer, I want the login flow to start automatically when the script is run directly to ease testing.",
+            "acceptance_criteria": [
+              "When the script is executed as __main__, login() is invoked",
+              "Login prompts appear and authentication flow executes"
+            ],
+            "related_requirements": [
+              "REQ-005",
+              "REQ-004"
+            ]
+          }
+        ],
+        "business_rules": [
+          {
+            "id": "BR-001",
+            "rule": "Passwords are stored as SHA-256 hashes and compared by hashing the input password during authentication.",
+            "implementation": "The in-memory store holds password hashes (hashes in users_db) and authenticate() compares the stored hash with hash_password(input_password).",
+            "validation": "Authentication succeeds only if the input password hashes to the same value as the stored hash for the given username."
+          }
+        ],
+        "data_flows": [
+          {
+            "source": "user input (username, password) via login prompts",
+            "destination": "authenticate()",
+            "transformation": "password is hashed by hash_password(password); username is checked against users_db; if present, compare hashed input with stored hash",
+            "validation": "authentication result (True/False) determines which message is printed"
+          },
+          {
+            "source": "users_db (in-memory store)",
+            "destination": "authenticate()",
+            "transformation": "lookup of stored password hash by username",
+            "validation": "ensures username exists in the store; otherwise authentication fails"
+          }
+        ]
+      },
+      "data_models": [],
+      "dependencies": {
+        "external_libraries": [],
+        "internal_modules": [
+          "hashlib"
+        ],
+        "database_dependencies": [],
+        "api_dependencies": [
+          "external_api_calls"
+        ]
+      },
+      "analysis_timestamp": "2026-05-20T17:57:15.124766"
+    }
+  ]
+}

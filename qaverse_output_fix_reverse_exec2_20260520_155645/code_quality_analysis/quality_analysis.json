@@ -1,0 +1,153 @@
+{
+  "eslint": {
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint", "prettier", "sonarjs"],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:prettier/recommended",
+      "plugin:sonarjs/recommended"
+    "",
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module"
+    },
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "rules": {
+          "complexity": ["error", 9],
+          "max-depth": ["error", 3],
+          "no-magic-numbers": [
+            "error",
+            {
+              "ignore": [0, 1],
+              "ignoreArrayIndexes": true
+            }
+          ],
+          "no-duplicate-imports": "error"
+        }
+      },
+      {
+        "files": ["*.js"],
+        "rules": {
+          "complexity": ["error", 9],
+          "max-depth": ["error", 3],
+          "no-magic-numbers": [
+            "error",
+            {
+              "ignore": [0, 1],
+              "ignoreArrayIndexes": true
+            }
+          ],
+          "no-duplicate-imports": "error"
+        }
+      },
+      {
+        "files": ["*.json"],
+        "parser": "jsonc-eslint-parser",
+        "plugins": ["json"],
+        "rules": {
+          "json/*": ["error", { "allowComments": true }]
+        }
+      }
+    ]
+  },
+  "prettier": {
+    "printWidth": 100,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "semi": true,
+    "tabWidth": 2
+  },
+  "markdownlint": {
+    "config": {
+      "MD013": false,
+      "MD033": false,
+      "MD029": { "style": "ordered" }
+    }
+  },
+  "jsonlint": {
+    "rules": {
+      "no-trailing-spaces": true,
+      "no-dupe-keys": true
+    }
+  },
+  "pylint": {
+    "init-hook": "import sys; sys.path.append('src')",
+    "load-plugins": "pylint.extensions.mccabe",
+    "disable": ["C0114", "C0115", "C0116"],
+    "max-line-length": 120
+  },
+  "mypy": {
+    "strict": true,
+    "ignore_missing_imports": true,
+    "warn_unused_ignores": true,
+    "disallow_untyped_defs": true
+  },
+  "black": {
+    "line-length": 88
+  },
+  "flake8": {
+    "max-line-length": 120,
+    "extend-select": ["C90", "W503", "E203"],
+    "select": ["E9", "F63", "F7", "C901"],
+    "max-complexity": 9
+  },
+  "nyc": {
+    "check-coverage": true,
+    "extension": [".js", ".ts", ".tsx"],
+    "all": true,
+    "reporter": ["text", "json", "lcov"],
+    "statements": 80,
+    "branches": 80,
+    "functions": 80,
+    "lines": 80
+  },
+  "pytest": {
+    "enabled": true,
+    "cov_threshold": 80,
+    "paths": ["**/*.py"]
+  },
+  "snyk": {
+    "enabled": true,
+    "monitorOnStart": true,
+    "packageManagerOverrides": {
+      "npm": ["package.json"],
+      "poetry": ["pyproject.toml"],
+      "pip": ["requirements.txt"]
+    },
+    "ignorePolicy": false
+  },
+  "sonarqube": {
+    "projectKey": "SampleProject",
+    "projectName": "SampleProject",
+    "projectVersion": "1.0.0",
+    "sources": ["."],
+    "cpd": {
+      "enabled": true,
+      "minimumTokens": 70
+    },
+    "qualityGate": {
+      "conditions": [
+        {
+          "metric": "coverage",
+          "operator": "isGreaterThanOrEqual",
+          "value": 80
+        }
+      ]
+    }
+  },
+  "codeClimate": {
+    "enabled": true,
+    "config": {
+      "tools": ["eslint", "pylint", "markdownlint"],
+      "ratings": true
+    }
+  }
+}
