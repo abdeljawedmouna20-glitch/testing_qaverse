@@ -1,30 +1,35 @@
-import hashlib
+import pytest
 
-# Base de données simulée (username: password hash)
-users_db = {
-    "admin": hashlib.sha256("admin123".encode()).hexdigest(),
-    "user": hashlib.sha256("user123".encode()).hexdigest()
-}
+# Simulated authentication function
+def login(username, password):
+    valid_username = "admin"
+    valid_password = "password123"
 
-def hash_password(password):
-    return hashlib.sha256(password.encode()).hexdigest()
-
-def authenticate(username, password):
-    if username in users_db:
-        hashed_input = hash_password(password)
-        if users_db[username] == hashed_input:
-            return True
-    return False
-
-def login():
-    print("=== AUTHENTIFICATION ===")
-    username = input("Nom d'utilisateur: ")
-    password = input("Mot de passe: ")
-
-    if authenticate(username, password):
-        print(" Connexion réussie !")
+    if username == valid_username and password == valid_password:
+        return "Login successful"
     else:
-        print(" Identifiants incorrects")
+        return "Invalid username or password"
 
-if __name__ == "__main__":
-    login()
+
+# Test: valid authentication
+def test_login_valid():
+    result = login("admin", "password123")
+    assert result == "Login successful"
+
+
+# Test: invalid authentication (wrong password)
+def test_login_invalid_password():
+    result = login("admin", "wrongpass")
+    assert result == "Invalid username or password"
+
+
+# Test: invalid authentication (wrong username)
+def test_login_invalid_username():
+    result = login("user", "password123")
+    assert result == "Invalid username or password"
+
+
+# Test: invalid authentication (empty fields)
+def test_login_empty_fields():
+    result = login("", "")
+    assert result == "Invalid username or password"
