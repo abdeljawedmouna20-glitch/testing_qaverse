@@ -1,0 +1,228 @@
+{
+  "eslint": {
+    "extensions": [".js", ".ts", ".tsx"],
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+      "project": "./tsconfig.json",
+      "sourceType": "module"
+    },
+    "plugins": [
+      "@typescript-eslint",
+      "import",
+      "prettier",
+      "sonarjs"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:import/recommended",
+      "plugin:prettier/recommended",
+      "plugin:sonarjs/recommended"
+    ],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.tsx"],
+        "rules": {
+          "complexity": ["error", 9],
+          "max-depth": ["error", 3],
+          "no-magic-numbers": [
+            "error",
+            {
+              "ignore": [0, 1, -1],
+              "ignoreArrayIndexes": true
+            }
+          ],
+          "sonarjs/no-duplicate-code": ["error"]
+        }
+      },
+      {
+        "files": ["*.js"],
+        "rules": {
+          "complexity": ["error", 9],
+          "max-depth": ["error", 3],
+          "no-magic-numbers": [
+            "error",
+            {
+              "ignore": [0, 1, -1],
+              "ignoreArrayIndexes": true
+            }
+          ],
+          "sonarjs/no-duplicate-code": ["error"]
+        }
+      },
+      {
+        "files": ["*.json"],
+        "parser": "jsonc-eslint-parser",
+        "rules": {
+          "json/*": "error"
+        }
+      }
+    ],
+    "rules": {
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["error"],
+      "import/no-unresolved": "off",
+      "prettier/prettier": "error"
+    }
+  },
+  "flake8": {
+    "maxLineLength": 88,
+    "select": ["E", "F", "W", "C90"],
+    "extendIgnore": ["E203", "W503"],
+    "plugins": [
+      "flake8-bugbear",
+      "flake8-duplicates",
+      "flake8-mypy"
+    ],
+    "perFileIgnores": {
+      "e2e.spec.ts": "DUPLICATE_CODE|MAGIC_NUMBERS"
+    },
+    "ignore": [
+      "venv",
+      "__pycache__",
+      ".venv"
+    ],
+    "maxComplexity": 9
+  },
+  "pylint": {
+    "rcfile": ".pylintrc",
+    "disable": [
+      "C0114",
+      "C0115",
+      "C0116"
+    ],
+    "max-line-length": 88,
+    "good-names": ["i", "j", "k", "ex", "Run", "db"],
+    "load-plugins": [
+      "pylint_django",
+      "pylint_pytest"
+    ]
+  },
+  "mypy": {
+    "strict": true,
+    "ignore_missing_imports": true,
+    "warn_unused_ignores": true,
+    "follow_imports": "normal",
+    "disallow_untyped_defs": true,
+    "disallow_incomplete_defs": true
+  },
+  "black": {
+    "line-length": 88,
+    "target-version": ["py38", "py39", "py310"],
+    "skip-string-normalization": false
+  },
+  "prettier": {
+    "printWidth": 100,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "all",
+    "arrowParens": "avoid"
+  },
+  "sonarqube": {
+    "host": "http://localhost:9000",
+    "projectKey": "my-project",
+    "projectName": "My Project",
+    "sources": ["src", "e2e", "tests"],
+    "languages": ["js", "ts", "py", "md", "json"],
+    "qualityProfile": "Quality Profile for JS/TS/Python",
+    "exclusions": ["**/dist/**", "**/build/**", "**/__tests__/**"]
+  },
+  "codeClimate": {
+    "enabled": true,
+    "configPath": ".codeclimate.yml"
+  },
+  "typescript": {
+    "tsconfig": "./tsconfig.json",
+    "lint": {
+      "rules": {
+        "no-magic-numbers": ["error", { "ignore": [0, 1, -1] }],
+        "complexity": ["error", 9],
+        "max-depth": ["error", 3],
+        "no-duplicate-imports": "error",
+        "no-floating-promises": "off"
+      }
+    }
+  },
+  "markdownlint": {
+    "config": {
+      "MD013": false,
+      "MD033": false,
+      "MD026": false,
+      "MD041": true,
+      "line-length": 100
+    }
+  },
+  "jsonlint": {
+    "config": {
+      "allowComments": false,
+      "trailingCommas": false
+    }
+  },
+  "coverage": {
+    "nyc": {
+      "all": true,
+      "extension": [".js", ".ts", ".tsx"],
+      "check-coverage": true,
+      "per-file": true,
+      "lines": 80,
+      "statements": 80,
+      "branches": 80,
+      "functions": 80
+    },
+    "jest": {
+      "collectCoverageFrom": [
+        "src/**/*.{ts,tsx,js}",
+        "e2e/**/*.{ts,tsx,js}"
+      ],
+      "testPathIgnorePatterns": ["/node_modules/"],
+      "coverageThreshold": {
+        "global": {
+          "statements": 80,
+          "branches": 80,
+          "functions": 80,
+          "lines": 80
+        }
+      }
+    }
+  },
+  "dependencies": {
+    "npmAudit": {
+      "enabled": true,
+      "failOnIssues": true,
+      "severityThreshold": "high"
+    },
+    "pipAudit": {
+      "enabled": true,
+      "failOnIssues": true
+    },
+    "snyk": {
+      "enabled": true
+    },
+    "dependabot": {
+      "enabled": true,
+      "schedule": "weekly"
+    }
+  },
+  "rulesMeta": [
+    {
+      "id": "no-magic-numbers",
+      "severity": "error",
+      "description": "Avoid magic numbers; prefer named constants."
+    },
+    {
+      "id": "sonarjs/no-duplicate-code",
+      "severity": "error",
+      "description": "Flag duplicated code blocks (e.g., in e2e.spec.ts) to reduce maintenance burden."
+    },
+    {
+      "id": "max-depth",
+      "severity": "error",
+      "description": "Limit nested blocks to improve readability and maintainability."
+    }
+  ]
+}
